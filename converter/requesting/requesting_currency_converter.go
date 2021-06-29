@@ -1,5 +1,9 @@
 package requesting
 
+import (
+	"fmt"
+)
+
 type RateRequester interface {
 	Request(from, to string) ([]byte, error)
 }
@@ -24,7 +28,7 @@ func (c *RequestingCurrencyConverter) Convert(from, to string, amount float64) (
 		return 0, err
 	}
 	if rate == 0 {
-		return 0, nil
+		return 0, fmt.Errorf("Conversion failed: rete is zero")
 	}
 
 	return amount / rate, nil
