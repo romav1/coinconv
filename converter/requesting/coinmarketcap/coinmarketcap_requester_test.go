@@ -7,9 +7,6 @@ import (
 
 func TestCoinmarketcapQuotesRateRequester(t *testing.T) {
 
-	//var CoinmarketcapQuotesRateRequester{}
-	//Request(from, to string) ([]byte, error) {
-
 	type Testcase struct {
 		ApiKey     string
 		ApiHost    string
