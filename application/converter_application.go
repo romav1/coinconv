@@ -3,9 +3,10 @@ package application
 import (
 	"fmt"
 	"io"
-	"strconv"
 
 	"github.com/romav1/coinconv/converter"
+
+	"github.com/shopspring/decimal"
 )
 
 type ConvertApplication struct {
@@ -20,7 +21,7 @@ func (capp *ConvertApplication) Run(args []string, stdout, stderr io.Writer) err
 	if len(args) < 4 {
 		return fmt.Errorf("usage: %s <amount> <from> <to>\n", args[0])
 	}
-	amount, err := strconv.ParseFloat(args[1], 64)
+	amount, err := decimal.NewFromString(args[1])
 	if err != nil {
 		return fmt.Errorf("amount parsing error: %v", err)
 	}

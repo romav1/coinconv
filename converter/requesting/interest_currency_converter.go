@@ -5,20 +5,12 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type RateRequester interface {
-	Request(from, to string) ([]byte, error)
-}
-
-type RateDecoder interface {
-	Decode(raw []byte, from, to string) (decimal.Decimal, error)
-}
-
-type RequestingCurrencyConverter struct {
+type InterestCurrencyConverter struct {
 	RateRequester RateRequester
 	RateDecoder   RateDecoder
 }
 
-func (c *RequestingCurrencyConverter) Convert(from, to string, amount decimal.Decimal) (decimal.Decimal, error) {
+func (c *InterestCurrencyConverter) Convert(from, to string, amount decimal.Decimal) (decimal.Decimal, error) {
 
 	response, err := c.RateRequester.Request(from, to)
 	if err != nil {
@@ -32,5 +24,5 @@ func (c *RequestingCurrencyConverter) Convert(from, to string, amount decimal.De
 		return decimal.Zero, fmt.Errorf("Conversion failed: rate is zero")
 	}
 
-	return amount.Div(rate), nil
+	return amount.Div(rate).Mul(decimal.NewFromFloat(1.05)), nil
 }

@@ -17,7 +17,12 @@ func main() {
 		},
 		RateDecoder: &coinmarketcap.CoinmarketcapQuotesRateDecoder{},
 	}
-	capp := &application.ConvertApplication{Converter: converter}
+	cache := &requesting.FakeCache{}
+	cachingConverter := &requesting.CachingCurrencyConverter{
+		Converter: converter,
+		Cache:     cache,
+	}
+	capp := &application.ConvertApplication{Converter: cachingConverter}
 
 	err := application.RunApplication(capp, os.Args, os.Stdout, os.Stderr)
 
